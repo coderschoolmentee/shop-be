@@ -15,7 +15,7 @@ const createProductPokemon = async () => {
 
     const newData = data.map((element, index) => {
         const imageUrl = `http://localhost:5000/images/clothes${index}.jpg`
-        console.log(imageUrl);
+        // console.log(imageUrl);
         const name = faker.commerce.productName()
         const description = faker.commerce.productDescription()
         return {
