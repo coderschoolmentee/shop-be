@@ -10,4 +10,10 @@ router.use("/users", userApi)
 const productApi = require('./product.api');
 router.use("/products", productApi)
 
+const productItemApi = require('./productItem.api');
+router.use("/productItems", productItemApi)
+
+const cartItemApi = require('./cartItem.api');
+router.use("/cartItems", cartItemApi)
+
 module.exports = router;
