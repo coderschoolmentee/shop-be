@@ -1,9 +1,8 @@
-const { catchAsync, AppError, sendResponse } = require("../helpers/utils");
-const OrderItem = require("../model/OrderItem");
-const User = require("../model/User");
-const orderItemController = {}
+const { catchAsync, sendResponse, AppError } = require("../../helpers/utils")
+const OrderItem = require("../../model/OrderItem")
+const User = require("../../model/User")
 
-orderItemController.getOrderItems = catchAsync(async (req, res, next) => {
+const getOrderItems = catchAsync(async (req, res, next) => {
     // Get data from request
     const { search, limit, page } = req.query
     const currentUserId = req.userId
@@ -34,4 +33,4 @@ orderItemController.getOrderItems = catchAsync(async (req, res, next) => {
     sendResponse(res, 200, true, { orderItems, count, totalPages }, null, "Get order items successfully")
 })
 
-module.exports = orderItemController;
+module.exports = getOrderItems;

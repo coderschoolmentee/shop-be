@@ -1,13 +1,10 @@
-const { catchAsync, AppError, sendResponse } = require("../helpers/utils");
-const CartItem = require("../model/CarItem");
-const Order = require("../model/Order");
-const OrderItem = require("../model/OrderItem");
-const ProductItem = require("../model/ProductItem");
-const User = require("../model/User");
+const { catchAsync, AppError, sendResponse } = require("../../helpers/utils")
+const CartItem = require("../../model/CarItem")
+const Order = require("../../model/Order")
+const OrderItem = require("../../model/OrderItem")
+const User = require("../../model/User")
 
-const orderController = {}
-
-orderController.createOrder = catchAsync(async (req, res, next) => {
+const createOrder = catchAsync(async (req, res, next) => {
     // Get data from request
     const { productItemId, totalPrices, status } = req.body
     const currentUserId = req.userId
@@ -37,4 +34,4 @@ orderController.createOrder = catchAsync(async (req, res, next) => {
     sendResponse(res, 201, true, orderCreated, null, "Create order and order item successfully")
 })
 
-module.exports = orderController;
+module.exports = createOrder;

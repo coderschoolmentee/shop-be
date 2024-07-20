@@ -35,20 +35,6 @@ router.get("/:id",
     productController.getSingleProduct)
 
 /** 
-* @route GET /products/:id/productItems
-* @description Get all productItems shop of product with Id
-* @access Public
-*/
-
-const getAllProductItemsSchema = Joi.object({
-    id: Joi.objectId().required()
-})
-
-router.get("/:id/productItems",
-    validation(getAllProductItemsSchema, "params"),
-    productController.getAllProductItems)
-
-/** 
  * @route POST /products (admin only)
  * @description Create a new product with admin 
  * @body { name, barnd, category, productItemId, image, description }

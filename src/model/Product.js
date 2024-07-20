@@ -5,10 +5,18 @@ const productSchema = Schema({
     name: { type: String },
     brand: { type: String, default: "" },
     category: { type: String, default: "" },
-    productItemId: [{ type: mongoose.Types.ObjectId, ref: "ProductItem" }],
     image: { type: String, default: "" },
     description: { type: String, default: "" },
 }, { timestamps: true })
+
+productSchema.virtual('productItems', {
+    ref: 'ProductItem',
+    localField: '_id',
+    foreignField: 'productId',
+});
+
+productSchema.set('toObject', { virtuals: true });
+productSchema.set('toJSON', { virtuals: true });
 
 const Product = model("Product", productSchema)
 module.exports = Product;

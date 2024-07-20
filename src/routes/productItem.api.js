@@ -4,7 +4,7 @@ const Joi = require('joi');
 Joi.objectId = require("joi-objectid")(Joi);
 const { validation } = require('../middlewares/validation');
 const authentication = require('../middlewares/authentication');
-const productItemsController = require('../controllers/productItems.controller');
+const productItemsController = require('../controllers/product-item.controller');
 
 /** 
  * @route POST /productItems (admin only)

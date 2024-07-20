@@ -1,4 +1,4 @@
-const orderItemController = require('../controllers/orderItem.controller');
+const orderItemController = require('../controllers/order-item.controller');
 const authentication = require('../middlewares/authentication');
 const { validation } = require('../middlewares/validation');
 const express = require('express');

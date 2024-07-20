@@ -3,8 +3,21 @@ const router = express.Router();
 const Joi = require('joi');
 const { validation } = require('../middlewares/validation');
 const authentication = require('../middlewares/authentication');
-const cartItemController = require('../controllers/cartItem.controller');
+const cartItemController = require('../controllers/cart-item.controller');
 Joi.objectId = require("joi-objectid")(Joi);
+
+/** 
+ * @route GET /cartItems:/:id
+ * @description Get single cartItem
+ * @access Login Required 
+*/
+
+const checkIdGetSingleCartItemsSchema = Joi.object({
+    id: Joi.objectId()
+})
+
+router.get("/:id", validation(checkIdGetSingleCartItemsSchema, "params"),
+    authentication.loginRequired, cartItemController.getSingleCartItem)
 
 /** 
  * @route GET /cartItems?page=1&limit=10
@@ -18,18 +31,6 @@ const checkGetListCartItemsSchema = Joi.object({
 
 router.get("/", validation(checkGetListCartItemsSchema, "query"),
     authentication.loginRequired, cartItemController.getCartItems)
-/** 
- * @route GET /cartItems:/:id
- * @description Get single cartItem
- * @access Login Required 
-*/
-
-const checkIdGetSingleCartItemsSchema = Joi.object({
-    id: Joi.objectId()
-})
-
-router.get("/:id", validation(checkIdGetSingleCartItemsSchema, "params"),
-    authentication.loginRequired, cartItemController.getSingleCartItem)
 
 /** 
  * @route POST /cartItems

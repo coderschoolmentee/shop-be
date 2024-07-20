@@ -1,10 +1,8 @@
-const { catchAsync, AppError, sendResponse } = require("../helpers/utils");
-const User = require("../model/User");
+const { catchAsync, AppError, sendResponse } = require("../../helpers/utils")
+const User = require("../../model/User")
 const bcrypt = require("bcryptjs");
 
-const authController = {}
-
-authController.loginWithEmail = catchAsync(async (req, res, next) => {
+const loginWithEmail = catchAsync(async (req, res, next) => {
     // Get data from request
     const { email, password } = req.body
 
@@ -22,4 +20,4 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
     sendResponse(res, 200, true, { user, accessToken }, null, "Login success")
 })
 
-module.exports = authController;
+module.exports = loginWithEmail;
