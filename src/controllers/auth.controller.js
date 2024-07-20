@@ -19,7 +19,7 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
     const accessToken = await user.generateToken();
 
     // Response
-    sendResponse(res, 200, true, { data: user, accessToken }, null, "Login success")
+    sendResponse(res, 200, true, { user, accessToken }, null, "Login success")
 })
 
 module.exports = authController;

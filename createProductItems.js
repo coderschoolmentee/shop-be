@@ -1,7 +1,6 @@
 const csv = require("csvtojson");
 const { default: mongoose } = require("mongoose");
 require('dotenv').config();
-const cloudinary = require('cloudinary');
 const ProductItem = require("./src/model/ProductItem");
 
 

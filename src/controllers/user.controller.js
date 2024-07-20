@@ -21,7 +21,7 @@ userController.register = catchAsync(async (req, res, next) => {
     const accessToken = await user.generateToken();
 
     // Response
-    sendResponse(res, 201, true, { data: user, accessToken }, null, "Create registration")
+    sendResponse(res, 201, true, { user, accessToken }, null, "Create registration")
 })
 
 userController.update = catchAsync(async (req, res, next) => {
@@ -35,11 +35,12 @@ userController.update = catchAsync(async (req, res, next) => {
     if (!user) throw new AppError(404, "User not found", "Update failed")
     if (!user._id.equals(currentUserId)) throw new AppError(400, "The id request not equals currentUserId", "Update failed")
 
+
     // Process
     user = await User.findByIdAndUpdate(id, { name, address, avatarUrl, phoneNumber }, { new: true })
 
     // Response
-    sendResponse(res, 200, true, { data: user }, null, "Update success")
+    sendResponse(res, 200, true, user, null, "Update success")
 })
 
 userController.getCurrentUser = catchAsync(async (req, res, next) => {
@@ -53,7 +54,7 @@ userController.getCurrentUser = catchAsync(async (req, res, next) => {
     // Process
 
     // Response
-    sendResponse(res, 200, true, { data: user }, null, "Get currentUser success")
+    sendResponse(res, 200, true, user, null, "Get currentUser success")
 })
 
 userController.getUsers = catchAsync(async (req, res, next) => {
@@ -77,7 +78,7 @@ userController.getUsers = catchAsync(async (req, res, next) => {
     const users = await User.find(filterCriterial).sort({ createdAt: -1 }).skip(offset).limit(limit)
 
     // Response
-    sendResponse(res, 200, true, { data: users, totalPages, countUser }, null, "Get Users Success")
+    sendResponse(res, 200, true, users, totalPages, countUser, null, "Get Users Success")
 })
 
 module.exports = userController;

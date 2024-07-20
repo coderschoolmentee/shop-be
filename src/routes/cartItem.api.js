@@ -34,7 +34,7 @@ router.get("/:id", validation(checkIdGetSingleCartItemsSchema, "params"),
 /** 
  * @route POST /cartItems
  * @description create a new cartItem 
- * @body { productId }
+ * @body { productId, quantity }
  * @authentication header currentUserID
  * @access Login Required 
 */

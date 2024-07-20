@@ -16,4 +16,10 @@ router.use("/productItems", productItemApi)
 const cartItemApi = require('./cartItem.api');
 router.use("/cartItems", cartItemApi)
 
+const orderApi = require('./order.api');
+router.use("/orders", orderApi)
+
+const orderItemApi = require('./orderItem.api');
+router.use("/orderItems", orderItemApi)
+
 module.exports = router;

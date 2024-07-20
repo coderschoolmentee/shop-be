@@ -24,18 +24,19 @@ productController.getProducts = catchAsync(async (req, res, next) => {
     const products = await Product.find(filterCriterial)
         .limit(limit)
         .skip(offset)
+        .populate("productItemId")
 
     // Response
-    sendResponse(res, 200, true, { data: products, totalPages, count }, null, "Get products successfully")
+    sendResponse(res, 200, true, { products, totalPages, count }, null, "Get products successfully")
 })
 
 productController.getSingleProduct = catchAsync(async (req, res, next) => {
     const productId = req.params.id
 
-    const product = await Product.findById(productId)
+    const product = await Product.findById(productId).populate("productItemId")
     if (!product) throw new AppError(404, "Product not found", "Find detail product failed")
 
-    sendResponse(res, 200, true, { data: products }, null, "Find product successfully")
+    sendResponse(res, 200, true, product, null, "Find product successfully")
 })
 
 productController.getAllProductItems = catchAsync(async (req, res, next) => {
@@ -44,7 +45,7 @@ productController.getAllProductItems = catchAsync(async (req, res, next) => {
     const productItems = await ProductItem.find({ productId: id }).populate("productId")
     if (!productItems) throw new AppError(404, "ProductItem not found", "Get all productItems failed")
 
-    sendResponse(res, 200, true, { data: productItems }, null, "Filter products successfully")
+    sendResponse(res, 200, true, productItems, null, "Get product variants successfully")
 })
 
 
@@ -56,10 +57,12 @@ productController.createProduct = catchAsync(async (req, res, next) => {
     if (!user) throw new AppError(404, "User not found", "Product creation failed")
     if (user.roles !== "admin") throw new AppError(403, "You not allowed to access", "Creation failed")
 
-    const product = await Product.create(data)
-    if (!product) throw new AppError(500, "Server error", "Product creation failed")
+    const product = await Product.find({ name: data.name })
+    if (product.length) throw new AppError(409, "Product already exists", "Product creation failed")
 
-    sendResponse(res, 201, true, { data: product }, null, "Create product successfully")
+    const createdProduct = await Product.create(data)
+
+    sendResponse(res, 201, true, createdProduct, null, "Create product successfully !")
 })
 
 productController.updateProduct = catchAsync(async (req, res, next) => {
@@ -74,7 +77,7 @@ productController.updateProduct = catchAsync(async (req, res, next) => {
     const product = await Product.findByIdAndUpdate(id, data, { new: true })
     if (!product) throw new AppError(500, "Server error", "Product update failed")
 
-    sendResponse(res, 200, true, { data: product }, null, "Update product successfully")
+    sendResponse(res, 200, true, product, null, "Update product successfully")
 })
 
 productController.deleteProduct = catchAsync(async (req, res, next) => {
@@ -88,7 +91,7 @@ productController.deleteProduct = catchAsync(async (req, res, next) => {
     const product = await Product.findByIdAndDelete(id)
     if (!product) throw new AppError(500, "Server error", "Product delete failed")
 
-    sendResponse(res, 204, true, null, null, "Delete product successfully")
+    sendResponse(res, 200, true, null, null, "Delete product successfully")
 })
 
 module.exports = productController;

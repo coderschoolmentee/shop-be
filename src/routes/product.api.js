@@ -22,12 +22,12 @@ router.get("/",
     productController.getProducts)
 
 /** 
- * @route GET /products/:id/
+ * @route GET /products/:id
  * @description Get detail product
  * @access Public
 */
 const productParamsSchema = Joi.object({
-    id: Joi.objectId()
+    id: Joi.objectId().required()
 })
 
 router.get("/:id",
@@ -41,7 +41,7 @@ router.get("/:id",
 */
 
 const getAllProductItemsSchema = Joi.object({
-    id: Joi.objectId()
+    id: Joi.objectId().required()
 })
 
 router.get("/:id/productItems",
@@ -51,7 +51,7 @@ router.get("/:id/productItems",
 /** 
  * @route POST /products (admin only)
  * @description Create a new product with admin 
- * @body { name, barnd, category, description, price }
+ * @body { name, barnd, category, productItemId, image, description }
  * @access Login required
 */
 
@@ -59,6 +59,8 @@ const createProductSchema = Joi.object({
     name: Joi.string().required(),
     brand: Joi.string().required(),
     category: Joi.string().required(),
+    productItemId: Joi.objectId(),
+    image: Joi.string().required(),
     description: Joi.string().required(),
 })
 
@@ -77,6 +79,7 @@ const updateProductSchema = Joi.object({
     name: Joi.string(),
     brand: Joi.string(),
     category: Joi.string(),
+    image: Joi.string(),
     description: Joi.string(),
 })
 

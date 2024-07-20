@@ -20,7 +20,10 @@ productItemsController.createProductItem = catchAsync(async (req, res, next) => 
 
     const productItem = await ProductItem.create(data)
 
-    sendResponse(res, 201, true, { data: productItem }, null, "Create productItem successfully")
+    product.productItemId.push(productItem._id)
+    product.save()
+
+    sendResponse(res, 201, true, productItem, null, "Create productItem successfully")
 })
 
 productItemsController.updateProductItem = catchAsync(async (req, res, next) => {
@@ -34,7 +37,7 @@ productItemsController.updateProductItem = catchAsync(async (req, res, next) => 
 
     const productItem = await ProductItem.findByIdAndUpdate(id, data, { new: true })
 
-    sendResponse(res, 200, true, { data: productItem }, null, "Update productItem successfully")
+    sendResponse(res, 200, true, productItem, null, "Update product variants successfully")
 })
 
 productItemsController.deleteProductItem = catchAsync(async (req, res, next) => {
