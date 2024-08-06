@@ -9,15 +9,88 @@ Joi.objectId = require("joi-objectid")(Joi);
 /** 
  * @route POST /orders
  * @description Create oder
- * @body { productItemId, totalPrices, status }
+ * @body { totalPrices, status }
  * @access Login required
 */
+
 const createOrderSchema = Joi.object({
-    productItemId: Joi.array().required(),
     totalPrices: Joi.number().required(),
     status: Joi.string().valid("pending", "accepted", "delivery", "received", "returns", "returned").required(),
-
 })
-router.post('/', validation(createOrderSchema, "body"), authentication.loginRequired, orderController.createOrder)
+router.post('/', validation(createOrderSchema, "body"), authentication.loginRequired, orderController.createOrder);
+
+/** 
+ * @route GET /orders (admin only)
+ * @description Get all oder
+ * @query { page, limit }
+ * @access Login required
+*/
+
+const getOrdersSchema = Joi.object({
+    page: Joi.number(),
+    limit: Joi.number(),
+})
+router.get('/', validation(getOrdersSchema, "query"), authentication.loginRequired, orderController.getOrders);
+
+/** 
+* @route GET /orders/:id
+* @description Get all oder by currenUserId
+* @query { page, limit }
+* @access Public
+*/
+
+const getOrdersByCurrentUserIdSchema = Joi.object({
+    page: Joi.number(),
+    limit: Joi.number(),
+    status: Joi.string(),
+});
+router.get('/:id',
+    validation(getOrdersByCurrentUserIdSchema, "query"),
+    authentication.loginRequired,
+    orderController.getOrdersByCurrentUserId);
+
+/** 
+ * @route PUT /orders/:id (admin only)
+ * @description Get all oder
+ * @params { id }
+ * @body { address, status }
+ * @access Login required
+*/
+
+const updateWithIdOrderSchema = Joi.object({
+    id: Joi.objectId()
+});
+
+const updateOrderSchema = Joi.object({
+    address: Joi.string(),
+    status: Joi.string().valid("pending", "accepted", "delivery", "received", "returns", "returned"),
+});
+router.put('/:id',
+    validation(updateWithIdOrderSchema, "params"),
+    validation(updateOrderSchema, "body"),
+    authentication.loginRequired,
+    orderController.updateOrder);
+
+/** 
+* @route DELETE /orders/:id 
+* @description Get all oder
+* @params { orderId }
+* @body { orderItemsId }
+* @access Login required
+*/
+
+const deleteOrderIdOrderSchema = Joi.object({
+    orderId: Joi.objectId().required(),
+});
+
+const deleteOrderItemsIdOrderSchema = Joi.object({
+    orderItemsId: Joi.objectId().required()
+});
+
+router.delete('/:orderId',
+    validation(deleteOrderIdOrderSchema, "params"),
+    validation(deleteOrderItemsIdOrderSchema, "body"),
+    authentication.loginRequired,
+    orderController.deleteOrder);
 
 module.exports = router;  

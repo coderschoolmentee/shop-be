@@ -25,6 +25,21 @@ router.post("/",
     authentication.loginRequired, productItemsController.createProductItem)
 
 /** 
+* @route GET /productItems/:id
+* @description Get all productItems wit productId 
+* @params { id } 
+* @access Login required
+*/
+
+const getProductItemsWithIdSchema = Joi.object({
+    id: Joi.string().required(),
+})
+
+router.get("/:id",
+    validation(getProductItemsWithIdSchema, "params"),
+    authentication.loginRequired, productItemsController.getProductItems)
+
+/** 
  * @route PUT /productItems/:id (admin only)
  * @description Update productItems 
  * @body { price, color, size, quantity }

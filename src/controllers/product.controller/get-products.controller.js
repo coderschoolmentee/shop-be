@@ -3,27 +3,31 @@ const Product = require("../../model/Product")
 
 const getProducts = catchAsync(async (req, res, next) => {
     // Get data from request
-    let { page, limit, search } = req.query
+    const { page, limit, search } = req.query;
 
     // Process
-    let filterConditions = []
-    if (search) {
-        const value = { name: { $regex: search, $options: "i" } }
-        filterConditions.push(value)
+    let filterConditions = [];
+    if (search !== "All") {
+        // { $regex: search, $options: "i" }
+        const value = { name: search };
+        filterConditions.push(value);
     }
     const filterCriterial = filterConditions.length ? { $and: filterConditions } : {};
 
-    const count = await Product.countDocuments()
-    const totalPages = Math.ceil(count / limit)
-    const offset = limit * (page - 1)
+    const count = await Product.countDocuments();
+    const totalPages = Math.ceil(count / limit);
+    const offset = limit * (page - 1);
+
 
     const products = await Product.find(filterCriterial)
         .limit(limit)
         .skip(offset)
-        .populate("productItems").exec()
+        .populate("productItems")
+        .exec();
+    console.log(filterConditions);
 
     // Response
-    sendResponse(res, 200, true, { products, totalPages, count }, null, "Get products successfully")
+    sendResponse(res, 200, true, { products, totalPages, count }, null, "Get products successfully");
 })
 
 module.exports = getProducts;

@@ -24,6 +24,7 @@ router.get("/",
 /** 
  * @route GET /products/:id
  * @description Get detail product
+ * @params { id }
  * @access Public
 */
 const productParamsSchema = Joi.object({
@@ -57,6 +58,7 @@ router.post("/", validation(createProductSchema, "body"),
 /** 
  * @route PUT /products/:id (admin only)
  * @description update product with admin
+ * @params { id }
  * @body { name, barnd, category, description }
  * @access Login required
 */
@@ -82,6 +84,7 @@ router.put("/:id",
 /** 
  * @route DELETE /products/:id (admin only)
  * @description delete product with admin
+ * @params { id }
  * @access Login required
  * 
 */

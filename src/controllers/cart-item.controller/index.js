@@ -5,9 +5,9 @@ const updateCartItem = require("./update.controller");
 const deleteCartItem = require("./delete.controller");
 
 module.exports = {
+    createCartItem,
     getSingleCartItem,
     getCartItems,
-    createCartItem,
     updateCartItem,
     deleteCartItem
 }

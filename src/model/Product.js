@@ -7,7 +7,7 @@ const productSchema = Schema({
     category: { type: String, default: "" },
     image: { type: String, default: "" },
     description: { type: String, default: "" },
-}, { timestamps: true })
+}, { timestamps: true });
 
 productSchema.virtual('productItems', {
     ref: 'ProductItem',
@@ -18,5 +18,5 @@ productSchema.virtual('productItems', {
 productSchema.set('toObject', { virtuals: true });
 productSchema.set('toJSON', { virtuals: true });
 
-const Product = model("Product", productSchema)
+const Product = model("Product", productSchema);
 module.exports = Product;

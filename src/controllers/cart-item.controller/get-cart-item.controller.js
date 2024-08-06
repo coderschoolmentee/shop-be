@@ -1,5 +1,5 @@
 const { catchAsync, AppError, sendResponse } = require("../../helpers/utils");
-const CartItem = require("../../model/CarItem");
+const CartItem = require("../../model/CartItem");
 
 const getSingleCartItem = catchAsync(async (req, res, next) => {
     const currentUserId = req.userId

@@ -45,7 +45,7 @@ const updateUserSchema = Joi.object({
 })
 router.put('/:id',
     validation(updateUserSchema, "body"),
-    validation(checkIdSchema, "params"),
+    // validation(checkIdSchema, "params"), 
     authentication.loginRequired, userController.update)
 
 module.exports = router;    
