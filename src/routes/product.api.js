@@ -22,12 +22,13 @@ router.get("/",
     productController.getProducts)
 
 /** 
- * @route GET /products/:id/
+ * @route GET /products/:id
  * @description Get detail product
+ * @params { id }
  * @access Public
 */
 const productParamsSchema = Joi.object({
-    id: Joi.objectId()
+    id: Joi.objectId().required()
 })
 
 router.get("/:id",
@@ -35,23 +36,9 @@ router.get("/:id",
     productController.getSingleProduct)
 
 /** 
-* @route GET /products/:id/productItems
-* @description Get all productItems shop of product with Id
-* @access Public
-*/
-
-const getAllProductItemsSchema = Joi.object({
-    id: Joi.objectId()
-})
-
-router.get("/:id/productItems",
-    validation(getAllProductItemsSchema, "params"),
-    productController.getAllProductItems)
-
-/** 
  * @route POST /products (admin only)
  * @description Create a new product with admin 
- * @body { name, barnd, category, description, price }
+ * @body { name, barnd, category, productItemId, image, description }
  * @access Login required
 */
 
@@ -59,6 +46,8 @@ const createProductSchema = Joi.object({
     name: Joi.string().required(),
     brand: Joi.string().required(),
     category: Joi.string().required(),
+    productItemId: Joi.objectId(),
+    image: Joi.string().required(),
     description: Joi.string().required(),
 })
 
@@ -69,6 +58,7 @@ router.post("/", validation(createProductSchema, "body"),
 /** 
  * @route PUT /products/:id (admin only)
  * @description update product with admin
+ * @params { id }
  * @body { name, barnd, category, description }
  * @access Login required
 */
@@ -77,6 +67,7 @@ const updateProductSchema = Joi.object({
     name: Joi.string(),
     brand: Joi.string(),
     category: Joi.string(),
+    image: Joi.string(),
     description: Joi.string(),
 })
 
@@ -93,6 +84,7 @@ router.put("/:id",
 /** 
  * @route DELETE /products/:id (admin only)
  * @description delete product with admin
+ * @params { id }
  * @access Login required
  * 
 */

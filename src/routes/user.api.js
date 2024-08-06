@@ -5,7 +5,13 @@ const userController = require('../controllers/user.controller');
 const { validation } = require('../middlewares/validation');
 const authentication = require('../middlewares/authentication');
 Joi.objectId = require("joi-objectid")(Joi);
-const { register, update, getCurrentUser, getUsers } = userController
+
+/** 
+ * @route GET /users/me
+ * @description Get current user info
+ * @access Login required
+*/
+router.get('/me', authentication.loginRequired, userController.getCurrentUser)
 
 /** 
  * @route GET /users?page=1&limit=10 
@@ -18,28 +24,7 @@ const getUsersSchema = Joi.object({
     page: Joi.number().default(1),
 })
 
-router.get('/', validation(getUsersSchema, "query"), authentication.loginRequired, getUsers)
-
-/** 
- * @route GET /users/me
- * @description Get current user info
- * @access Login required
-*/
-router.get('/me', authentication.loginRequired, getCurrentUser)
-
-/** 
- * @route POST /users
- * @description Register new user
- * @body { name, email, password }
- * @access Public 
-*/
-const registerSchema = Joi.object({
-    name: Joi.string().required().max(30),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    roles: Joi.string().valid("admin", "user").default("user")
-})
-router.post('/', validation(registerSchema, "body"), register)
+router.get('/', validation(getUsersSchema, "query"), authentication.loginRequired, userController.getUsers)
 
 /** 
  * @route PUT /users/:id
@@ -60,8 +45,7 @@ const updateUserSchema = Joi.object({
 })
 router.put('/:id',
     validation(updateUserSchema, "body"),
-    validation(checkIdSchema, "params"),
-    authentication.loginRequired, update)
-
+    // validation(checkIdSchema, "params"), 
+    authentication.loginRequired, userController.update)
 
 module.exports = router;    
