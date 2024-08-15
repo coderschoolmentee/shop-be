@@ -75,7 +75,6 @@ router.put('/:id',
 * @route DELETE /orders/:id 
 * @description Get all oder
 * @params { orderId }
-* @body { orderItemsId }
 * @access Login required
 */
 
@@ -83,13 +82,8 @@ const deleteOrderIdOrderSchema = Joi.object({
     orderId: Joi.objectId().required(),
 });
 
-const deleteOrderItemsIdOrderSchema = Joi.object({
-    orderItemsId: Joi.objectId().required()
-});
-
 router.delete('/:orderId',
     validation(deleteOrderIdOrderSchema, "params"),
-    validation(deleteOrderItemsIdOrderSchema, "body"),
     authentication.loginRequired,
     orderController.deleteOrder);
 
