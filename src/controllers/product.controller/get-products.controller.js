@@ -1,33 +1,41 @@
-const { catchAsync, AppError, sendResponse } = require("../../helpers/utils")
-const Product = require("../../model/Product")
+const { catchAsync, AppError, sendResponse } = require("../../helpers/utils");
+const Product = require("../../model/Product");
 
 const getProducts = catchAsync(async (req, res, next) => {
-    // Get data from request
-    const { page, limit, search } = req.query;
+  // Get data from request
+  const { page, limit, search, sort } = req.query;
 
-    // Process
-    let filterConditions = [];
-    if (search !== "All") {
-        // { $regex: search, $options: "i" }
-        const value = { name: search };
-        filterConditions.push(value);
-    }
-    const filterCriterial = filterConditions.length ? { $and: filterConditions } : {};
+  // Process
+  let filterConditions = [];
 
-    const count = await Product.countDocuments();
-    const totalPages = Math.ceil(count / limit);
-    const offset = limit * (page - 1);
+  if (search !== "All") {
+    const value = { name: { $regex: search, $options: "i" } };
+    filterConditions.push(value);
+  }
 
+  const filterCriterial = filterConditions.length
+    ? { $and: filterConditions }
+    : {};
 
-    const products = await Product.find(filterCriterial)
-        .limit(limit)
-        .skip(offset)
-        .populate("productItems")
-        .exec();
-    console.log(filterConditions);
+  const count = await Product.countDocuments();
+  const totalPages = Math.ceil(count / limit);
+  const offset = limit * (page - 1);
 
-    // Response
-    sendResponse(res, 200, true, { products, totalPages, count }, null, "Get products successfully");
-})
+  const products = await Product.find(filterCriterial)
+    .limit(limit)
+    .skip(offset)
+    .populate("productItems")
+    .exec();
+
+  // Response
+  sendResponse(
+    res,
+    200,
+    true,
+    { products, totalPages, count },
+    null,
+    "Get products successfully"
+  );
+});
 
 module.exports = getProducts;
