@@ -14,8 +14,8 @@ Joi.objectId = require("joi-objectid")(Joi);
 router.get("/me", authentication.loginRequired, userController.getCurrentUser);
 
 /**
- * @route GET /users?page=1&limit=10
- * @description Get users with pagination (admin only)
+ * @route GET /users?page=1&limit=10 (admin only)
+ * @description Get users with pagination
  * @access Login required
  */
 
@@ -34,6 +34,7 @@ router.get(
 /**
  * @route PUT /users/:id
  * @description Update user profile
+ * @params { id }
  * @body { name, address, avatarUrl, phoneNumber }
  * @access Login required
  */
@@ -51,7 +52,7 @@ const updateUserSchema = Joi.object({
 router.put(
   "/:id",
   validation(updateUserSchema, "body"),
-  // validation(checkIdSchema, "params"),
+  validation(checkIdSchema, "params"),
   authentication.loginRequired,
   userController.update
 );
