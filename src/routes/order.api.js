@@ -54,15 +54,11 @@ router.get(
 );
 
 /**
- * @route GET /orders/:id
+ * @route GET /orders/me
  * @description Get all oder by currenUserId
- * @params { id }
  * @query { page, limit, status }
  * @access Public
  */
-const getOrdersByIdSchema = Joi.object({
-  id: Joi.objectId().required(),
-});
 
 const getOrdersByCurrentUserIdSchema = Joi.object({
   page: Joi.number(),
@@ -78,8 +74,7 @@ const getOrdersByCurrentUserIdSchema = Joi.object({
   ),
 });
 router.get(
-  "/:id",
-  validation(getOrdersByIdSchema, "params"),
+  "/me",
   validation(getOrdersByCurrentUserIdSchema, "query"),
   authentication.loginRequired,
   orderController.getOrdersByCurrentUserId
