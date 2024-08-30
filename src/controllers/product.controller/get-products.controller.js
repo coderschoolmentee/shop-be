@@ -8,7 +8,7 @@ const getProducts = catchAsync(async (req, res, next) => {
   // Process
   let filterConditions = [];
 
-  if (search !== "All") {
+  if (search && search !== "All") {
     const value = { name: { $regex: search, $options: "i" } };
     filterConditions.push(value);
   }

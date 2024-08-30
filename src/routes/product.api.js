@@ -66,7 +66,7 @@ router.post(
  * @route PUT /products/:id (admin only)
  * @description update product with admin
  * @params { id }
- * @body { name, barnd, category, description }
+ * @body { name, barnd, category, image, description }
  * @access Login required
  */
 
