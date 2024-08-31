@@ -13,10 +13,7 @@ const getOrders = catchAsync(async (req, res) => {
   if (!user) throw new AppError(404, "User not found", "Get orders failed");
 
   // Process
-  if (status === "All") {
-    const value = {};
-    filterConditions.push(value);
-  } else {
+  if (status && !status === "All") {
     const value = { status: { $regex: status, $options: "i" } };
     filterConditions.push(value);
   }
