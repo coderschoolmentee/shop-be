@@ -13,6 +13,7 @@ Joi.objectId = require("joi-objectid")(Joi);
  */
 const getProductsSchema = Joi.object({
   search: Joi.string(),
+  sort: Joi.string(),
   page: Joi.number().default(1),
   limit: Joi.number().default(50),
 });

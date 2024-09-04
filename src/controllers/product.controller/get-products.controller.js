@@ -1,7 +1,8 @@
 const { catchAsync, AppError, sendResponse } = require("../../helpers/utils");
 const Product = require("../../model/Product");
+const ProductItem = require("../../model/ProductItem");
 
-const getProducts = catchAsync(async (req, res, next) => {
+const getProducts = catchAsync(async (req, res) => {
   // Get data from request
   const { page, limit, search, sort } = req.query;
 
@@ -10,6 +11,16 @@ const getProducts = catchAsync(async (req, res, next) => {
 
   if (search && search !== "All") {
     const value = { name: { $regex: search, $options: "i" } };
+    filterConditions.push(value);
+  } else if (sort && sort === "increase") {
+    const productItems = await ProductItem.find({ price: { $gte: 10000 } });
+    const productId = productItems.map((e) => e.productId);
+    const value = { _id: { $in: productId } };
+    filterConditions.push(value);
+  } else if (sort && sort === "decrease") {
+    const productItems = await ProductItem.find({ price: { $lte: 10000 } });
+    const productId = productItems.map((e) => e.productId);
+    const value = { _id: { $in: productId } };
     filterConditions.push(value);
   }
 
@@ -27,7 +38,6 @@ const getProducts = catchAsync(async (req, res, next) => {
     .populate("productItems")
     .exec();
 
-  // Response
   sendResponse(
     res,
     200,
