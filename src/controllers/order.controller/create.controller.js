@@ -14,7 +14,7 @@ const createOrder = catchAsync(async (req, res) => {
   if (!user) throw new AppError(404, "User not found", "Create order failed");
   const address = user.address;
   const phoneNumber = user.phoneNumber;
-  if (!address && !phoneNumber)
+  if (!address || !phoneNumber)
     throw new AppError(
       404,
       "Address or Phone number not found, please add address or phone number your profile !",
