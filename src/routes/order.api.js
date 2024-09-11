@@ -81,7 +81,7 @@ router.get(
 );
 
 /**
- * @route PUT /orders/:id (admin only)
+ * @route PUT /orders/:id
  * @description Get all oder
  * @params { id }
  * @body { address, status }

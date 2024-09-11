@@ -25,9 +25,6 @@ const getOrders = catchAsync(async (req, res) => {
   const totalPages = Math.ceil(count / limit);
   const offset = limit * (page - 1);
 
-  if (user.roles !== "admin")
-    throw new AppError(403, "You not allowed to access", "Get orders failed");
-
   const orders = await Order.find(filterCriterial)
     .limit(limit)
     .skip(offset)

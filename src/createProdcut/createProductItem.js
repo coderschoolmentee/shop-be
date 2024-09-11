@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
-const ProductItem = require("./model/ProductItem");
-const Product = require("./model/Product");
+const ProductItem = require("../model/ProductItem");
+const Product = require("../model/Product");
 const { faker } = require("@faker-js/faker");
 
 const mongodbUrl =

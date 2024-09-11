@@ -1,8 +1,9 @@
 const csv = require("csvtojson");
 const { faker } = require("@faker-js/faker");
-const Product = require("./model/Product");
+const Product = require("../model/Product");
 const { default: mongoose } = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 const mongodbUrl =
   "mongodb+srv://tvphuc2k4:tvphuc2k4@cluster0.usqu2x8.mongodb.net/shop";
@@ -12,9 +13,9 @@ mongoose
   .catch((e) => console.log(e));
 
 cloudinary.config({
-  cloud_name: "dm88fvsss",
-  api_key: "862182755269353",
-  api_secret: "YuMTNQ96rroZ8J1BxvuqS5pJ_Yo",
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
 const createProduct = async () => {
@@ -27,7 +28,7 @@ const createProduct = async () => {
 
   data.forEach(async (e) => {
     const image = await cloudinary.uploader
-      .upload(`./images/images_compressed/${e.image}.jpg`)
+      .upload(`../image/images_compressed/${e.image}.jpg`)
       .catch((e) => console.log(e));
 
     const url = cloudinary.url(image.public_id, {

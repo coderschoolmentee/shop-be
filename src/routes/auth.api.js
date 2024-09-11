@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
+require("dotenv").config();
 const authController = require("../controllers/auth.controller/");
 const { validation } = require("../middlewares/validation");
 Joi.objectId = require("joi-objectid")(Joi);
