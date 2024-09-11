@@ -13,10 +13,11 @@ const createOrder = catchAsync(async (req, res) => {
   const user = await User.findById(currentUserId);
   if (!user) throw new AppError(404, "User not found", "Create order failed");
   const address = user.address;
-  if (!address)
+  const phoneNumber = user.phoneNumber;
+  if (!address && !phoneNumber)
     throw new AppError(
       404,
-      "Address not found, please add address your profile !",
+      "Address or Phone number not found, please add address or phone number your profile !",
       "Create order failed"
     );
   const cartItem = await CartItem.find({ userId: currentUserId });
