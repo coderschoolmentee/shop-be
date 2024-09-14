@@ -12,12 +12,14 @@ const getProducts = catchAsync(async (req, res) => {
   if (search && search !== "All") {
     const value = { name: { $regex: search, $options: "i" } };
     filterConditions.push(value);
-  } else if (sort && sort === "increase") {
+  }
+
+  if (sort && sort === "increase") {
     const productItems = await ProductItem.find({ price: { $gte: 10000 } });
     const productId = productItems.map((e) => e.productId);
     const value = { _id: { $in: productId } };
     filterConditions.push(value);
-  } else if (sort && sort === "decrease") {
+  } else {
     const productItems = await ProductItem.find({ price: { $lte: 10000 } });
     const productId = productItems.map((e) => e.productId);
     const value = { _id: { $in: productId } };
