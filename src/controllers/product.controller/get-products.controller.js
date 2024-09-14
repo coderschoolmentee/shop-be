@@ -19,7 +19,7 @@ const getProducts = catchAsync(async (req, res) => {
     const productId = productItems.map((e) => e.productId);
     const value = { _id: { $in: productId } };
     filterConditions.push(value);
-  } else {
+  } else if (sort && sort === "decrease") {
     const productItems = await ProductItem.find({ price: { $lte: 10000 } });
     const productId = productItems.map((e) => e.productId);
     const value = { _id: { $in: productId } };
